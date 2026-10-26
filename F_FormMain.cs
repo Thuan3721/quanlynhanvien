@@ -1,0 +1,258 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace QuanLyNhanVien3
+{
+    public partial class F_FormMain: Form
+    {
+        public F_FormMain()
+        {
+            InitializeComponent();
+        }
+        public void OpenChildForm(Form childForm)
+        {
+            // Kiểm tra xem form này đã mở chưa
+            foreach (Form frm in this.MdiChildren)
+            {
+                if (frm.GetType() == childForm.GetType())
+                {
+                    frm.Activate(); // Nếu đã mở thì chỉ cần kích hoạt form đó
+                    return;
+                }
+            }
+
+            // Nếu chưa mở -> mở mới
+            childForm.MdiParent = this; 
+            childForm.Show();
+        }
+
+        public static class LoginInfo
+        {
+            public static string CurrentUserRole = "";
+            public static string CurrentUserName = "";
+            public static int CurrentRoleId = 0;            // ← THÊM DÒNG NÀY
+        }
+
+        private void ApplyRole()
+        {
+            int roleId = LoginInfo.CurrentRoleId;
+
+            // RoleId = 1: Admin (Full quyền)
+            if (roleId == 1)
+            {
+                // Admin có tất cả quyền
+                phongBanToolStripMenuItem.Enabled = true;
+                chucVuToolStripMenuItem.Enabled = true;
+                nhanVienToolStripMenuItem.Enabled = true;
+                luongToolStripMenuItem.Enabled = true;
+                HopDongToolStripMenuItem.Enabled = true;
+                TaiKoanToolStripMenuItem.Enabled = true;
+                ThongTinDuAnToolStripMenuItem1.Enabled = true;
+                chiTietDuAnToolStripMenuItem1.Enabled = true;
+                chamConngToolStripMenuItem.Enabled = true;
+
+                BaoCaoNhanVienToolStripMenuItem.Enabled = true;
+                báoCáoLươngToolStripMenuItem.Enabled = true;
+                báoCáoDựÁnToolStripMenuItem.Enabled = true;
+                báoCáoChấmCôngToolStripMenuItem.Enabled = true;
+                tổngHợpToolStripMenuItem.Enabled = true;
+            }
+            // RoleId = 2: Manager (Một số quyền)
+            else if (roleId == 2)
+            {
+                phongBanToolStripMenuItem.Enabled = true;
+                chucVuToolStripMenuItem.Enabled = true;
+                nhanVienToolStripMenuItem.Enabled = true;
+                luongToolStripMenuItem.Enabled = true;
+                HopDongToolStripMenuItem.Enabled = true;
+                TaiKoanToolStripMenuItem.Enabled = false;       // Manager không quản lý tài khoản
+                ThongTinDuAnToolStripMenuItem1.Enabled = true;
+                chiTietDuAnToolStripMenuItem1.Enabled = true;
+                chamConngToolStripMenuItem.Enabled = true;
+
+                BaoCaoNhanVienToolStripMenuItem.Enabled = true;
+                báoCáoLươngToolStripMenuItem.Enabled = true;
+                báoCáoDựÁnToolStripMenuItem.Enabled = true;
+                báoCáoChấmCôngToolStripMenuItem.Enabled = true;
+                tổngHợpToolStripMenuItem.Enabled = true;
+            }
+            // Các Role khác - Không có quyền
+            else
+            {
+                phongBanToolStripMenuItem.Enabled = false;
+                chucVuToolStripMenuItem.Enabled = false;
+                nhanVienToolStripMenuItem.Enabled = false;
+                luongToolStripMenuItem.Enabled = false;
+                HopDongToolStripMenuItem.Enabled = false;
+                TaiKoanToolStripMenuItem.Enabled = false;
+                ThongTinDuAnToolStripMenuItem1.Enabled = false;
+                chiTietDuAnToolStripMenuItem1.Enabled = false;
+                //chamConngToolStripMenuItem.Enabled = true;
+                chamConngchitietToolStripMenuItem.Enabled = false;
+
+
+                BaoCaoNhanVienToolStripMenuItem.Enabled = false;
+                báoCáoLươngToolStripMenuItem.Enabled = false;
+                báoCáoDựÁnToolStripMenuItem.Enabled = false;
+                báoCáoChấmCôngToolStripMenuItem.Enabled = false;
+                tổngHợpToolStripMenuItem.Enabled = false;
+            }
+        }
+        private void ThongTinDuAnToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_DuAnChung());
+            //DuAn DA = new DuAn();
+            //DA.MdiParent = this;
+            //DA.Show();
+        }
+
+        private void chiTietDuAnToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_ChiTietDuAn());
+            //F_ChiTietDuAn CTDA = new F_ChiTietDuAn();
+            //CTDA.MdiParent = this;
+            //CTDA.Show();
+        }
+
+        private void phongBanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_PhongBan());
+            //PhongBan PB = new PhongBan();
+            //PB.MdiParent = this;
+            //PB.Show();
+        }
+
+        private void chucVuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_ChucVu());
+            //ChucVu CV = new ChucVu();
+            //CV.MdiParent = this;
+            //CV.Show();
+        }
+
+        private void nhanVienToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_NhanVien());
+            //NhanVien NV = new NhanVien();
+            //NV.MdiParent = this;
+            //NV.Show();
+        }
+
+        private void luongToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_Luong());
+            //Luong L = new Luong();
+            //L.MdiParent = this;
+            //L.Show();
+        }
+
+        private void chamConngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //OpenChildForm(new F_ChamCongChiTiet());
+            //ChamCong CC = new ChamCong();
+            //CC.MdiParent = this;
+            //CC.Show();
+        }
+
+        private void HopDongToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_HopDong());
+            //HopDong HD = new HopDong();
+            //HD.MdiParent = this;
+            //HD.Show();
+        }
+
+        private void TaiKoanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_TaiKhoan());
+            //TaiKhoan TK = new TaiKhoan();
+            //TK.MdiParent = this;
+            //TK.Show();
+        }
+
+        private void F_FormMain_Load(object sender, EventArgs e)
+        {
+            ApplyRole();
+            toolStripLabel1.Text =
+                "Xin chào: " + LoginInfo.CurrentUserName;
+        }
+
+        private void thoátToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            DialogResult rs = MessageBox.Show("Bạn có chắc chắn muốn thoat khong?", "tieu de thoat",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (rs == DialogResult.Yes)
+            {
+                this.Close();
+            }
+        }
+
+        private void ThongKe_Click(object sender, EventArgs e)
+        {
+            //OpenChildForm(new F_ThongKeNhanVien());
+        }
+
+        private void báoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_BaoCaoNhanVien());
+
+        }
+
+        private void báoCáoLươngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_BaoCaoLuong());
+
+        }
+
+        private void báoCáoDựÁnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_BaoCaoDuAn());
+
+        }
+
+        private void báoCáoChấmCôngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_BaoCaoChamCong());
+
+        }
+
+        private void tổngHợpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_BaoCaoTongHop());
+
+        }
+
+        private void thongTinDuAnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_DuAnChung());
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chiTiếtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_ChamCongChiTiet());
+        }
+
+        private void chấmCôngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new F_ChamCong());
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+    }
+}
